@@ -1,2 +1,2 @@
-# C-program
+# C programs
 Trials for c programming
