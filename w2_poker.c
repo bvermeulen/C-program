@@ -29,7 +29,7 @@ typedef struct Card {
 
 typedef struct Result_flush {
     int is_flush;
-    CardSuit flush;
+    CardSuit suit;
 } Result_flush;
 
 typedef struct Result_straight {
@@ -195,23 +195,23 @@ Result_flush check_flush(const Card *hand) {
     }
 
     if (count_clubs > 4) {
-        result.flush = Clubs;
+        result.suit= Clubs;
         result.is_flush = 1;
     }
     else if (count_diamonds > 4) {
-        result.flush = Diamonds;
+        result.suit= Diamonds;
         result.is_flush = 1;
     }
     else if (count_hearts > 4) {
-        result.flush = Hearts;
+        result.suit = Hearts;
         result.is_flush = 1;
     }
     else if (count_spades > 4) {
-        result.flush = Spades;
+        result.suit = Spades;
         result.is_flush = 1;
     }
     else {
-        result.flush = 4;
+        result.suit = 4;
         result.is_flush = 0;
     }
 
@@ -247,7 +247,7 @@ Result_straight check_straight(const Card *cardhand, const Result_flush flush) {
             // check same cards keep the one with a suit same as flush
             j = i;
             while (hand[j].pip == hand[j+1].pip && j < CARDS_HAND - 1) {
-                if (hand[j+1].suit == flush.flush) {
+                if (hand[j+1].suit == flush.suit) {
                     playhand[index].pip = hand[j+1].pip;
                     playhand[index].suit = hand[j+1].suit;
                     found = 1;
@@ -332,7 +332,6 @@ Result_pips check_pips(const Card *cardhand) {
                 newhand[handindex].pip = hand[j].pip;
                 newhand[handindex].suit = hand[j].suit;
                 handindex++;
-
             }
         }
         result.count[pipindex] = count;
@@ -378,7 +377,7 @@ Results result_hand(const Result_flush flush, const Result_straight straight, co
     else if (straight.is_flush && straight.is_straight) result.straight_flush++;
     else if (count_four == 1) result.four_of_a_kind++;
     else if (count_three == 2) result.full_house++;
-    else if ((count_three == 1) && (count_pairs > 0)) result.full_house++;
+    else if (count_three == 1 && count_pairs > 0) result.full_house++;
     else if (flush.is_flush) result.flush++;
     else if (straight.is_straight) result.straight++;
     else if (count_three == 1) result.three_of_a_kind++;
@@ -401,7 +400,7 @@ Results analyse_hand(Card cardhand[CARDS_HAND]) {
     Result_pips pips;
     Results result;
 
-    // check for flush and straight
+    // check for flush, straights and pips
     flush = check_flush(cardhand);
     straight = check_straight(cardhand, flush);
     pips = check_pips(cardhand);
@@ -458,7 +457,7 @@ void test_hand(Card hand[CARDS_HAND]) {
 
 void main() {
     int players = 3;
-    int rounds = 3000000;
+    int rounds = 2000000;
     Card cards[NUMCARDS], cards_shuffled[NUMCARDS];
     Card cards_hand[players][CARDS_HAND], hand[CARDS_HAND];
     Results result, total_result;
@@ -467,7 +466,7 @@ void main() {
     // create a deck of 52 cards and shuffle
     create_cards(cards, 0);
 
-    // Check a know hand of cards
+    // Check a known hand of cards
     printf("Test a known hand\n");
     test_hand(hand);
     result = analyse_hand(hand);
@@ -571,7 +570,7 @@ void main() {
     printf("Four of a kind : %i (%.6f, %.6f)\n", total_result.four_of_a_kind, p_r_four_of_a_kind, d_four_of_a_kind);
     printf("Full house     : %i (%.6f, %.6f)\n", total_result.full_house, p_r_full_house, d_full_house);
     printf("Flush          : %i (%.6f, %.6f)\n", total_result.flush, p_r_flush, d_flush);
-    printf("Straight       : %i (%.6f, %.6f)\n", total_result.straight_flush, p_r_straight, d_straight_flush);
+    printf("Straight       : %i (%.6f, %.6f)\n", total_result.straight, p_r_straight, d_straight);
     printf("Three of a kind: %i (%.6f, %.6f)\n", total_result.three_of_a_kind, p_r_three_of_a_kind, d_three_of_a_kind);
     printf("Two pair       : %i (%.6f, %.6f)\n", total_result.two_pair, p_r_two_pair, d_two_pair);
     printf("Pair           : %i (%.6f, %.6f)\n", total_result.pair, p_r_pair, d_pair);
