@@ -575,5 +575,5 @@ void main() {
     printf("Two pair       : %i (%.6f, %.6f)\n", total_result.two_pair, p_r_two_pair, d_two_pair);
     printf("Pair           : %i (%.6f, %.6f)\n", total_result.pair, p_r_pair, d_pair);
     printf("No hand        : %i (%.6f, %.6f)\n", total_result.no_hand, p_r_no_hand, d_no_hand);
-    printf("\ncheck value from \n");
+    printf("\ncheck value from https://www.coursera.org/learn/c-structured-programming/peer/oksx9/week-2-honors-assignment\n");
 }
