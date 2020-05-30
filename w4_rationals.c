@@ -12,6 +12,7 @@
 // rationals.Take the file posted with this homework and produce the sum of all the rationals
 // and the average of all the rationals in the file.
 
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -120,10 +121,7 @@ Rational divide(Rational a, Rational b)
 int main(int argc, char *argv[])
 {
     Rational q[MAXNUM], result, average, count;
-    Rational *q_ptr = NULL;
-    q_ptr = q;
-    int *size, a = 0;
-    size = &a;
+    int size;
 
     // read the input file
     if (argc != 2)
@@ -131,7 +129,7 @@ int main(int argc, char *argv[])
         printf("Provide filename with rational numbers ...\n");
         exit(1);
     }
-    read_rationals(argv[1], q_ptr, size);
+    read_rationals(argv[1], q, &size);
 
     // print the results for +, -, x, /
     Rational num1 = q[0], num2 = q[1];
@@ -168,13 +166,13 @@ int main(int argc, char *argv[])
     printf("\nCalcultate the average ...\n");
     result.nominator = 0;
     result.denominator = 1;
-    for (int i = 0; i < *size; i++)
+    for (int i = 0; i < size; i++)
     {
         printf("number %2d: (%-2d/%2d) [%6.3f]\n", i + 1, q[i].nominator, q[i].denominator,
                (float)q[i].nominator / (float)q[i].denominator);
         result = sum(result, q[i]);
     }
-    count.nominator = *size;
+    count.nominator = size;
     count.denominator = 1;
     result = divide(result, count);
     printf("The avarage is: (%-2d/%2d) [%6.3f]", result.nominator, result.denominator,
