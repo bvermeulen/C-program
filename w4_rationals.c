@@ -177,4 +177,6 @@ int main(int argc, char *argv[])
     result = divide(result, count);
     printf("The avarage is: (%-2d/%2d) [%6.3f]", result.nominator, result.denominator,
            (float)result.nominator / (float)result.denominator);
+
+    return 0;
 }
